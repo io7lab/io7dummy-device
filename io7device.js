@@ -34,10 +34,11 @@ export class Device {
             }
         } 
         console.log('Device Configuration:', cfg);
-        this.ca = existsSync('ca.pem') ? 'ca.pem' : '';
-        this.port = this.ca ? '8883' : '1883';
-        this.proto = this.ca ? 'mqtts' : 'mqtt';
-        this.ssl_params = this.ca ? { ca: this.ca } : {};
+        this.caFile = existsSync('ca.pem') ? 'ca.pem' : '';
+        this.port = this.caFile ? '8883' : '1883';
+        this.proto = this.caFile ? 'mqtts' : 'mqtt';
+        this.ssl_params = this.caFile ? { ca: readFileSync(this.caFile) } : {};
+        console.log('SSL Params:', this.ssl_params);
 
         this.broker = cfg.broker || '127.0.0.1';
         this.devId = cfg.devId;
