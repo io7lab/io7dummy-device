@@ -30,3 +30,5 @@ Once registering two devices(say, lamp1 and switch1) to the io7 IOT Platform aft
   </li>
 </ul>
 
+## Example NodeRED flow 
+<img width="622" alt="Screenshot 2024-05-27 at 5 02 03 PM" src="https://github.com/io7lab/io7dummy-device/assets/13171662/54bb66db-a0b0-4aed-81de-39a50246559f">
