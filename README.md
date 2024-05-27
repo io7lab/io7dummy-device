@@ -7,7 +7,7 @@ Once registering two devices(say, lamp1 and switch1) to the io7 IOT Platform aft
 
 ## To run the light bulb lamp
 
-`npx github:io7lab/io7dummy-device`
+`npx github:io7lab/io7dummy-device lamp`
 <ul>
   <li>
     First time run will let configure<br>
