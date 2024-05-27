@@ -58,7 +58,7 @@ export function runLamp() {
                 offLamp();
             }
             d.publishEvent('status', JSON.stringify({"d":{"lamp":lamp}}));
-            console.log(`{"d":{"lamp":"${lamp}"}`, cursorUp);
+            console.log(`\x1B[0m      {"d":{"lamp":"${lamp}"}`, cursorUp);
         }
     });
     
@@ -68,7 +68,7 @@ export function runLamp() {
     
     function loop() {
         d.publishEvent('status', JSON.stringify({"d":{"lamp":lamp}}));
-        console.log(`{"d":{"lamp":"${lamp}"}`, cursorUp);
+        console.log(`\x1B[0m      {"d":{"lamp":"${lamp}"}`, cursorUp);
         setTimeout(loop, d.meta.pubInterval);
     };
     

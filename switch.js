@@ -11,35 +11,35 @@ let sw = 'off';
 
 function offSwitch() {
     console.log(clearCursor);
-    console.log("    ");
-    console.log("     _________    ");
-    console.log("    |         |    ");
-    console.log("    |   \x1B[1mON\x1B[0m    |    ");
-    console.log("    |    _    |    ");
-    console.log("    |   |_|   |    ");
-    console.log("    |   |◼|   |    ");
-    console.log("    |         |    ");
-    console.log("    |   \x1B[1mOFF\x1B[0m   |      ");
-    console.log("    |_________|    ");
-    console.log("    ");
-    console.log("    ");
+    console.log("     ");
+    console.log("      _________    ");
+    console.log("     |         |    ");
+    console.log("     |   \x1B[1mON\x1B[0m    |    ");
+    console.log("     |    _    |    ");
+    console.log("     |   |_|   |    ");
+    console.log("     |   |◼|   |    ");
+    console.log("     |         |    ");
+    console.log("     |   \x1B[1mOFF\x1B[0m   |      ");
+    console.log("     |_________|    ");
+    console.log("     ");
+    console.log("     ");
     console.log(" press 1 to turn on");
-    console.log("    ");
+    console.log("     ");
     sw = 'off';
 }
 
 function onSwitch() {
     console.log(clearCursor);
     console.log("    ");
-    console.log("     _________    ");
-    console.log("    |         |    ");
-    console.log("    |   \x1B[1mON\x1B[0m    |    ");
-    console.log("    |    _    |    ");
-    console.log("    |   |\x1B[31m◼\x1B[30m|   |    ");
-    console.log("    |   |_|   |    ");
-    console.log("    |         |    ");
-    console.log("    |   \x1B[1mOFF\x1B[0m   |      ");
-    console.log("    |_________|    ");
+    console.log("      _________    ");
+    console.log("     |         |    ");
+    console.log("     |   \x1B[1mON\x1B[0m    |    ");
+    console.log("     |    _    |    ");
+    console.log("     |   |\x1B[31m◼\x1B[30m|   |    ");
+    console.log("     |   |_|   |    ");
+    console.log("     |         |    ");
+    console.log("     |   \x1B[1mOFF\x1B[0m   |      ");
+    console.log("     |_________|    ");
     console.log("    ");
     console.log("    ");
     console.log(" press 0 to turn off");
