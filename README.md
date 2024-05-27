@@ -6,7 +6,27 @@ Once registering two devices(say, lamp1 and switch1) to the io7 IOT Platform aft
 
 
 ## To run the light bulb lamp
+
 `npx github:io7lab/io7dummy-device`
+<ul>
+  <li>
+    First time run will let configure<br>
+    <img width="431" alt="Screenshot 2024-05-27 at 4 42 50 PM" src="https://github.com/io7lab/io7dummy-device/assets/13171662/807d8eff-7b7e-4a6a-aef0-dc382dbb0b8a">
+  </li>
+  <li>
+    Light Bulb Lamp Running<br>
+    <img width="290" alt="Screenshot 2024-05-27 at 4 43 09 PM" src="https://github.com/io7lab/io7dummy-device/assets/13171662/f7f690d8-f428-4ac8-b951-4b24ce8f8269">
+  </li>
+</ul>
+
+
 
 ## To run the wall switch
 `npx github:io7lab/io7dummy-device switch`
+<ul>
+  <li>
+    Wall Switch Running<br>
+    <img width="251" alt="Screenshot 2024-05-27 at 4 36 57 PM" src="https://github.com/io7lab/io7dummy-device/assets/13171662/f929a56b-bed3-4103-93c1-6c3deabf4653">    
+  </li>
+</ul>
+
