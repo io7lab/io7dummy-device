@@ -32,3 +32,6 @@ Once registering two devices(say, lamp1 and switch1) to the io7 IOT Platform aft
 
 ## Example NodeRED flow 
 <img width="622" alt="Screenshot 2024-05-27 at 5 02 03 PM" src="https://github.com/io7lab/io7dummy-device/assets/13171662/54bb66db-a0b0-4aed-81de-39a50246559f">
+
+## SSL Configuration
+For the SSL/TLS mqtt connection, just copy the CA's certificate file as 'ca.pem'. With 'ca.pem' file in the current directory, the device program will start mqtts connection.
