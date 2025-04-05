@@ -51,7 +51,7 @@ export function runLamp() {
     d.setUserCommand((topic, msg) => {
         console.log('command', JSON.parse(msg));
         let cmd = JSON.parse(msg);
-        if (cmd.d.hasOwnProperty('lamp')) {
+        if (cmd.hasOwnProperty('d') && cmd.d.hasOwnProperty('lamp')) {
             if (cmd.d.lamp === 'on') {
                 onLamp();
             } else {
