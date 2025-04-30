@@ -1,5 +1,7 @@
 # io7 Dummy Device
 
+This is a part of io7 IOT Platform https://github.com/io7lab to help build an IOT device, especially to test out the io7 Platform Cloud installation.
+
 This has a dummy device NodeJS program that emulates a light bulb lamp and a wall switch
 
 Once registering two devices(say, lamp1 and switch1) to the io7 IOT Platform after the platform setup, you can run this nodejs programs without installing locally by following this step.
