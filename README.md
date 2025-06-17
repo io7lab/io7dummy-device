@@ -1,4 +1,4 @@
-# io7 Dummy Device
+# 1. io7 Dummy Device
 
 This is a part of io7 IOT Platform https://github.com/io7lab to help build an IOT device, especially to test out the io7 Platform Cloud installation.
 
@@ -35,5 +35,72 @@ Once registering two devices(say, lamp1 and switch1) to the io7 IOT Platform aft
 ## Example NodeRED flow 
 <img width="622" alt="Screenshot 2024-05-27 at 5 02 03 PM" src="https://github.com/io7lab/io7dummy-device/assets/13171662/54bb66db-a0b0-4aed-81de-39a50246559f">
 
-## SSL Configuration
+# 2. SSL Configuration
 For the SSL/TLS mqtt connection, just copy the CA's certificate file as 'ca.pem'. With 'ca.pem' file in the current directory, the device program will start mqtts connection.
+
+# 3. Customization or New Device 
+
+A new type of dummy device can be easily created like this, or this can be the base library for a nodejs io7 device.
+* import Device class
+* implement init(device) function with following
+  * define setUserCommand that handles the command from the io7 Platform
+  * define loop that handles the device's functionality
+  * and call connect() and run()
+
+Here is an example. 
+```javascript
+import { Device, clearCursor }  from './io7device.js';
+
+const cursorUp = '\x1B[A'; // Move cursor up one line
+const cursorDown = '\x1B[B'; // Move cursor down one line
+const cursorRight = '\x1B[C'; // Move cursor right one column
+const cursorLeft = '\x1B[D'; // Move cursor left one column
+const clearScreen = '\x1B[2J';
+
+let valve = 'off';
+
+function offValve() {
+    clearCursor();
+    console.log("                               ");  
+    console.log("             __T__             ");  
+    console.log("          Valve Closed         ");  
+    console.log("                               ");  
+    valve = 'off';
+}
+
+function onValve() {
+    clearCursor();
+    console.log("                               ");  
+    console.log("             =====             ");  
+    console.log("           Valve Open          ");  
+    console.log("                               ");  
+    valve = 'on';
+}
+
+export function init(device) {
+    
+    device.setUserCommand((topic, msg) => {
+        console.log('command', JSON.parse(msg));
+        let cmd = JSON.parse(msg);
+        if (cmd.hasOwnProperty('d') && cmd.d.hasOwnProperty('valve')) {
+            if (cmd.d.valve === 'on') {
+                onValve();
+            } else {
+                offValve();
+            }
+            device.publishEvent('status', JSON.stringify({"d":{"valve":valve}}));
+            console.log(`\x1B[0m      {"d":{"valve":"${valve}"}`, cursorUp);
+        }
+    });
+    
+    device.loop = () => {
+        device.publishEvent('status', JSON.stringify({"d":{"valve":valve}}));
+        console.log(`\x1B[0m      {"d":{"valve":"${valve}"}`, cursorUp);
+    };
+
+    offValve();
+
+    device.connect();
+    device.run();
+}
+```

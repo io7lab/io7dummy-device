@@ -65,14 +65,13 @@ export function init(device) {
         }
     });
     
-    device.connect();
-    
-    offSwitch();
-    
     device.loop = () => {
         device.publishEvent('status', JSON.stringify({"d":{"switch":sw}}));
         console.log(`{"d":{"switch":"${sw}"}`, cursorUp);
     };
     
+    offSwitch();
+
+    device.connect();
     device.run();
 }

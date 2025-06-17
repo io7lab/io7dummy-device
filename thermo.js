@@ -77,16 +77,15 @@ export function init(device) {
         }
     });
     
-    device.connect();
-
-    setColumnIndex();
-    
     device.loop = () => {
         let temp = getTemperature(base);
         displayThermometer(temp);
         device.publishEvent('status', JSON.stringify({"d":{"temperature":temp}}));
         console.log(`{"d":{"temperature":"${temp}"}`, cursorUp);
     };
+
+    setColumnIndex();
     
+    device.connect();
     device.run();
 }

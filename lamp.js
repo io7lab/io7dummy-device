@@ -60,14 +60,13 @@ export function init(device) {
         }
     });
     
-    device.connect();
-    
-    offLamp();
-    
     device.loop = () => {
         device.publishEvent('status', JSON.stringify({"d":{"lamp":lamp}}));
         console.log(`\x1B[0m      {"d":{"lamp":"${lamp}"}`, cursorUp);
     };
+
+    offLamp();
     
+    device.connect();
     device.run();
 }
