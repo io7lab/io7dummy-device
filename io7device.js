@@ -1,18 +1,65 @@
 import {Client, connect} from 'mqtt';
-import {existsSync, writeFile, readFileSync } from 'fs';
+import {existsSync, writeFile, readFileSync, copyFileSync, readdirSync, mkdirSync, appendFileSync } from 'fs';
 import prompt from 'prompt-sync';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+import https from 'https';
+import http from 'http';
 
-const getInput = prompt(); // Assuming you only need the prompt functionality
-const cursorUp = '\x1B[A';
+const getInput = prompt(); // Assuming you need only the prompt functionality
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 let cfg_file = 'device.cfg';
+
+function isValidURL(string) {
+    try {
+       new URL(string);
+        return true;
+    } catch (err) {
+        return false;
+    }
+}
+
+function rotateFile(source) {
+    const archiveDir = './archive';
+    if (!existsSync(archiveDir)) {
+        mkdirSync(archiveDir);
+    }
+    const filePattern = new RegExp(`^${source}\\.js\\.(\\d+)$`);
+    const files = readdirSync(archiveDir);
+    const matchingFiles = files
+        .map(file => {
+            const match = file.match(filePattern);
+            return match ? { file, number: parseInt(match[1]) } : null;
+        })
+        .filter(Boolean)
+        .sort((a, b) => a.number - b.number);
+
+    // Determine the next number
+    const nextNumber = matchingFiles.length > 0 ? matchingFiles[matchingFiles.length - 1].number + 1 : 0;
+
+    // Copy current file to the new rotated file
+    const currentFile = join(__dirname, `${source}.js`);
+    const rotatedFile = `${archiveDir}/${source}.js.${nextNumber}`;
+    copyFileSync(currentFile, rotatedFile);
+
+    console.log(`Rotated ${currentFile} to ${rotatedFile}`);
+}
+
+export const clearCursor = () => {
+    process.stdout.write('\x1B[0;0H\x1B[2J');
+}
+export const cursorUp = '\x1B[A';
 
 export function setConfigFile(f) {
     cfg_file = f;
 }
 
 export class Device {
-    constructor(cfg = null) {
+    constructor(deviceCodeFile, cfg = null) {
+        this.dCodeFile = deviceCodeFile;
         if (!cfg || !cfg.devId) {
             if (existsSync(cfg_file)) {
                 try {
@@ -50,6 +97,7 @@ export class Device {
         this.resetCallback = null;
         this.updateCallback = null;
         this.upgradeCallback = null;
+        this.isRunning = true;
         
         this.evtTopic = `iot3/${this.devId}/evt/`;
         this.cmdTopicBase = `iot3/${this.devId}/cmd/`;
@@ -61,20 +109,41 @@ export class Device {
         this.resetTopic = `iot3/${this.devId}/mgmt/initiate/device/factory_reset`;
         this.upgradeTopic = `iot3/${this.devId}/mgmt/initiate/firmware/update`;
         this.connectionTopic = `iot3/${this.devId}/evt/connection/fmt/json`;
+
+        this.run = () => {
+            if (!this.isRunning) return;
+            this.loop();
+            this.timer = setTimeout(this.run, this.meta.pubInterval);
+        };
+
+        this.init = () => {
+            import(`./${this.dCodeFile}.js?update=` + Date.now())
+                .then(deviceJS => {
+                    if (deviceJS.init && typeof deviceJS.init === 'function') {
+                        deviceJS.init(this);
+                    } else {
+                        console.error('init function not found in the imported module');
+                    }
+                })
+                .catch(err => {
+                    console.error('Failed to import module:', err);
+                });
+        }
+
+        this.init();
     }
 
     connect() {
-        //this.client = mqtt.connect(`mqtt://${this.broker}:${port}`, {
         this.client = connect(`${this.proto}://${this.broker}:${this.port}`, {
             clientId: this.devId,
             username: this.devId,
             password: this.token,
             ...this.ssl_params,
-            will: { 
+            will: {
                 topic: this.connectionTopic,
-                payload: '{"d":{"status":"offline"}}', 
-                retain : true, qos:0
-            } 
+                payload: '{"d":{"status":"offline"}}',
+                retain: true, qos: 0
+            }
         });
 
         this.client.on('connect', () => {
@@ -103,6 +172,42 @@ export class Device {
                 } else {
                     console.log('resetting device');
                     this.saveCfg({});
+                }
+            } else if (topicStr === this.upgradeTopic) {
+                let upgradeURL = JSON.parse(msg).d.upgrade.fw_url;
+                if (isValidURL(upgradeURL)) {
+                    clearTimeout(this.timer);
+                    this.isRunning = false;
+                    this.client.end();
+                    rotateFile(this.dCodeFile);
+                    clearCursor();
+                    console.log('\nDownloading the firmware');
+                    // Download the code
+                    const protocol = upgradeURL.startsWith('https:') ? https : http;
+                    const fileName = join(__dirname, `${this.dCodeFile}.js`);
+                    
+                    protocol.get(upgradeURL, (response) => {
+                        if (response.statusCode === 200) {
+                            const file = writeFile(fileName, '', () => {});
+                            response.on('data', (chunk) => {
+                                appendFileSync(fileName, chunk);
+                            });
+                            response.on('end', () => {
+                                console.log('Firmware download completed');
+                            });
+                        } else {
+                            console.log(`Download failed with status: ${response.statusCode}`);
+                            this.isRunning = true;
+                        }
+                    }).on('error', (err) => {
+                        console.error('Download error:', err);
+                    });
+                    setTimeout(() => {
+                        this.isRunning = true;
+                        this.init();
+                    }, 1000);
+                } else {
+                    console.log('Invalid URL for upgrade')
                 }
             } else if (topicStr === this.updateTopic) {
                 const metafields = JSON.parse(msg).d.fields[0];
