@@ -38,7 +38,7 @@ Once registering two devices(say, lamp1 and switch1) to the io7 IOT Platform aft
 # 2. SSL Configuration
 For the SSL/TLS mqtt connection, just copy the CA's certificate file as 'ca.pem'. With 'ca.pem' file in the current directory, the device program will start mqtts connection.
 
-# 3. Customization or New Device 
+# 3. Customization or building a New type of Device 
 
 A new type of dummy device can be easily created like this, or this can be the base library for a nodejs io7 device.
 * import Device class
