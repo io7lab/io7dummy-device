@@ -59,7 +59,6 @@ export function setConfigFile(f) {
 
 export class Device {
     constructor(deviceCodeFile, cfg = null) {
-        this.dCodeFile = deviceCodeFile;
         if (!cfg || !cfg.devId) {
             if (existsSync(cfg_file)) {
                 try {
@@ -80,7 +79,7 @@ export class Device {
                 this.saveCfg(cfg);
             }
         } 
-        console.log('Device Configuration:', cfg);
+        this.dCodeFile = deviceCodeFile;
         this.caFile = existsSync('ca.pem') ? 'ca.pem' : '';
         this.port = this.caFile ? '8883' : '1883';
         this.proto = this.caFile ? 'mqtts' : 'mqtt';
@@ -117,7 +116,8 @@ export class Device {
         };
 
         this.init = () => {
-            import(`./${this.dCodeFile}.js?update=` + Date.now())
+            // the ?update=Date.now() part makes sure this line always imports the dCodeFile
+            import(`./${this.dCodeFile}.js?update=` + Date.now())   
                 .then(deviceJS => {
                     if (deviceJS.init && typeof deviceJS.init === 'function') {
                         deviceJS.init(this);
@@ -185,7 +185,6 @@ export class Device {
                     // Download the code
                     const protocol = upgradeURL.startsWith('https:') ? https : http;
                     const fileName = join(__dirname, `${this.dCodeFile}.js`);
-                    
                     protocol.get(upgradeURL, (response) => {
                         if (response.statusCode === 200) {
                             const file = writeFile(fileName, '', () => {});
