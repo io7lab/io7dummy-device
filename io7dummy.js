@@ -9,5 +9,4 @@ if (process.argv.length < 3) {
 
 let dCodeFile = process.argv[2];
 
-setConfigFile(`${dCodeFile}.cfg`);
 let device = new Device(dCodeFile);

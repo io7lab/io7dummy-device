@@ -59,6 +59,8 @@ export function setConfigFile(f) {
 
 export class Device {
     constructor(deviceCodeFile, cfg = null) {
+        this.dCodeFile = deviceCodeFile.endsWith('.js') ? deviceCodeFile.slice(0, -3) : deviceCodeFile;
+        setConfigFile(`${this.dCodeFile}.cfg`);
         if (!cfg || !cfg.devId) {
             if (existsSync(cfg_file)) {
                 try {
@@ -79,7 +81,6 @@ export class Device {
                 this.saveCfg(cfg);
             }
         } 
-        this.dCodeFile = deviceCodeFile;
         this.caFile = existsSync('ca.pem') ? 'ca.pem' : '';
         this.port = this.caFile ? '8883' : '1883';
         this.proto = this.caFile ? 'mqtts' : 'mqtt';
