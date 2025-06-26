@@ -41,11 +41,16 @@ For the SSL/TLS mqtt connection, just copy the CA's certificate file as 'ca.pem'
 # 3. Customization or building a New type of Device 
 
 A new type of dummy device can be easily created like this, or this can be the base library for a nodejs io7 device.
-* import Device class
-* implement init(device) function with following
-  * define setUserCommand that handles the command from the io7 Platform
-  * define loop that handles the device's functionality
-  * and call connect() and run()
+* git clone https://github.com/io7lab/io7dummy-device.git
+* cd io7dummy-device
+* and implement a new device or modify existing switch.js/lamp.js/thermo.js for the following points
+  * import Device class
+  * implement init(device) function with following
+    * define setUserCommand that handles the command from the io7 Platform
+    * define loop that handles the device's functionality
+    * and call connect() and run()
+* run `node io7dummy yourDevice.js` for testing
+  * the reason of running io7dummy instead of yourDevice.js directly is to make it runnable with npx easily. `npx github:io7lab/io7dummy-device yourDevice.js`
 
 Here is an example. 
 ```javascript
@@ -62,8 +67,12 @@ let valve = 'off';
 function offValve() {
     clearCursor();
     console.log("                               ");  
+    console.log("                               ");  
+    console.log("                               ");  
     console.log("             __T__             ");  
+    console.log("                               ");  
     console.log("          Valve Closed         ");  
+    console.log("                               ");  
     console.log("                               ");  
     valve = 'off';
 }
@@ -71,8 +80,12 @@ function offValve() {
 function onValve() {
     clearCursor();
     console.log("                               ");  
+    console.log("                               ");  
+    console.log("                               ");  
     console.log("             =====             ");  
+    console.log("                               ");  
     console.log("           Valve Open          ");  
+    console.log("                               ");  
     console.log("                               ");  
     valve = 'on';
 }
