@@ -57,10 +57,6 @@ Here is an example.
 import { Device, clearCursor }  from './io7device.js';
 
 const cursorUp = '\x1B[A'; // Move cursor up one line
-const cursorDown = '\x1B[B'; // Move cursor down one line
-const cursorRight = '\x1B[C'; // Move cursor right one column
-const cursorLeft = '\x1B[D'; // Move cursor left one column
-const clearScreen = '\x1B[2J';
 
 let valve = 'off';
 
