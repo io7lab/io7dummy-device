@@ -2,12 +2,12 @@ import { Device, clearCursor, cursorUp }  from './io7device.js';
 
 const min = 15;
 const max = 35;
-let base = 25.0;
+let base_temp = 25.0;
 let lowTemp = 22.0;
 let highTemp = 28.0;
 let columnIndex = {};
 
-function getTemperature(base) {
+function getRandomData(base) {
     return Math.round((base + (Math.random() - 0.5) * 2) * 10) / 10;
 }
 
@@ -69,19 +69,24 @@ export function init(device) {
     stdin.setEncoding('utf8');
     stdin.on('data', function(key){
         if (key === '\u001b[A') {  // Up arrow
-            base = adjust('up', base);
+            base_temp = adjust('up', base_temp);
         } else if (key === '\u001b[B') {  // Down arrow
-            base = adjust('down', base);
+            base_temp = adjust('down', base_temp);
         } else if (key === '\u0003' || key === '\u001b') {
             process.exit();
         }
     });
     
     device.loop = () => {
-        let temp = getTemperature(base);
+        let temp = getRandomData(base_temp);
         displayThermometer(temp);
-        device.publishEvent('status', JSON.stringify({"d":{"temperature":temp}}));
-        console.log(`{"d":{"temperature":"${temp}"}`, cursorUp);
+        let data = {
+            d : {
+                temperature : temp
+            }
+        }
+        device.publishEvent('status', JSON.stringify(data));
+        console.log(JSON.stringify(data), cursorUp);
     };
 
     setColumnIndex();
