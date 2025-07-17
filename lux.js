@@ -55,14 +55,26 @@ function getRandomLUX(condition) {
     return Math.round((base + (Math.random() - 0.5) * 200));
 }
 
-let condition = 'dark';
-let stdin = process.stdin;
-stdin.setRawMode(true);
-stdin.resume();
-stdin.setEncoding('utf8');
 
 export function init(device) {
-    function publishLux() {
+    let condition = 'dark';
+    let stdin = process.stdin;
+    stdin.setRawMode(true);
+    stdin.resume();
+    stdin.setEncoding('utf8');
+    stdin.on('data', function (key) {
+        if (key === '\u001b[A') {  // Up arrow
+            condition = 'bright';
+            device.publishChange();
+        } else if (key === '\u001b[B') {  // Down arrow
+            condition = 'dark';
+            device.publishChange();
+        } else if (key === '\u0003' || key === '\u001b') {
+            process.exit();
+        }
+    });
+
+    device.loop = () => {
         if (condition === 'dark') {
             drawDark();
         } else {
@@ -77,21 +89,6 @@ export function init(device) {
 
         device.publishEvent('status', JSON.stringify(payload));
         console.log(`\x1B[0m          ${JSON.stringify(payload)}`, cursorUp);
-    }
-
-    device.loop = () => {
-        stdin.on('data', function (key) {
-            if (key === '\u001b[A') {  // Up arrow
-                condition = 'bright';
-                publishLux();
-            } else if (key === '\u001b[B') {  // Down arrow
-                condition = 'dark';
-                publishLux();
-            } else if (key === '\u0003' || key === '\u001b') {
-                process.exit();
-            }
-        });
-        publishLux();
     };
 
     // Initial drawing

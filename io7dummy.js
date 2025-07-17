@@ -3,7 +3,7 @@ import { setConfigFile, Device } from './io7device.js';
 import { existsSync } from 'fs';
 
 if (process.argv.length < 3) {
-    console.log('Usage: io7dummy.js  lamp | switch | thermo | ...');
+    console.log('Usage: io7dummy.js  lamp | switch | thermo | lux | ...');
     process.exit(1);
 }
 

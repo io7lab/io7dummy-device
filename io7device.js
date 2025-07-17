@@ -116,6 +116,12 @@ export class Device {
             this.timer = setTimeout(this.run, this.meta.pubInterval);
         };
 
+        this.publishChange = () => {
+            if (!this.isRunning) return;
+            clearTimeout(this.timer);
+            this.run();
+        };
+
         this.init = () => {
             // the ?update=Date.now() part makes sure this line always imports the dCodeFile
             import(`./${this.dCodeFile}.js?update=` + Date.now())   

@@ -62,13 +62,24 @@ function displayThermometer(temp) {
     console.log("     ");
 }
 
-let stdin = process.stdin;
-stdin.setRawMode(true);
-stdin.resume();
-stdin.setEncoding('utf8');
-
 export function init(device) {
-    function publishData() {
+    let stdin = process.stdin;
+    stdin.setRawMode(true);
+    stdin.resume();
+    stdin.setEncoding('utf8');
+    stdin.on('data', function(key){
+        if (key === '\u001b[A') {  // Up arrow
+            base_temp = adjust('up', base_temp);
+            device.publishChange();
+        } else if (key === '\u001b[B') {  // Down arrow
+            base_temp = adjust('down', base_temp);
+            device.publishChange();
+        } else if (key === '\u0003' || key === '\u001b') {
+            process.exit();
+        }
+    });
+    
+    device.loop = () => {
         let temp = getRandomData(base_temp);
         displayThermometer(temp);
         let data = {
@@ -78,21 +89,6 @@ export function init(device) {
         }
         device.publishEvent('status', JSON.stringify(data));
         console.log(JSON.stringify(data), cursorUp);
-    }
-    stdin.on('data', function(key){
-        if (key === '\u001b[A') {  // Up arrow
-            base_temp = adjust('up', base_temp);
-            publishData();
-        } else if (key === '\u001b[B') {  // Down arrow
-            base_temp = adjust('down', base_temp);
-            publishData();
-        } else if (key === '\u0003' || key === '\u001b') {
-            process.exit();
-        }
-    });
-    
-    device.loop = () => {
-        publishData();
     };
 
     setColumnIndex();

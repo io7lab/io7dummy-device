@@ -56,12 +56,10 @@ export function init(device) {
             process.exit();
         } else if (key === '1') {
             onSwitch();
-            device.publishEvent('status', JSON.stringify({"d":{"switch":sw}}));
-            console.log(`{"d":{"switch":"${sw}"}`, cursorUp);
+            device.publishChange();
         } else if (key === '0') {
             offSwitch();
-            device.publishEvent('status', JSON.stringify({"d":{"switch":sw}}));
-            console.log(`{"d":{"switch":"${sw}"}`, cursorUp);
+            device.publishChange();
         }
     });
     
