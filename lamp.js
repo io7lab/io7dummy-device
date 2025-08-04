@@ -10,37 +10,37 @@ let lamp = 'off';
 
 function offLamp() {
     clearCursor();
-    console.log("\x1B[7m                               ");
-    console.log("\x1B[7m                               ");       
-    console.log("\x1B[7m                               ");
-    console.log("\x1B[7m           ..-^-..             ");
-    console.log("\x1B[7m          .   T   .            ");
-    console.log("\x1B[7m         .    |    .           ");
-    console.log("\x1B[7m          .   |   .            ");
-    console.log("\x1B[7m           ..___..             ");
-    console.log("\x1B[7m            {_.=}              ");
-    console.log("\x1B[7m            {_.=}              ");
-    console.log("\x1B[7m             -_-               ");        
-    console.log("\x1B[7m                               ");
-    console.log("\x1B[7m                               ");
+    console.log("\x1B[0m                               ");
+    console.log("\x1B[0m                               ");       
+    console.log("\x1B[0m                               ");
+    console.log("\x1B[0m           ..-^-..             ");
+    console.log("\x1B[0m          .   T   .            ");
+    console.log("\x1B[0m         .    |    .           ");
+    console.log("\x1B[0m          .   |   .            ");
+    console.log("\x1B[0m           ..___..             ");
+    console.log("\x1B[0m            {_.=}              ");
+    console.log("\x1B[0m            {_.=}              ");
+    console.log("\x1B[0m             -_-               ");        
+    console.log("\x1B[0m                               ");
+    console.log("\x1B[0m                               ");
     lamp = 'off';
 }
 
 function onLamp() {
     clearCursor();
-    console.log("\x1B[7m                               ");
-    console.log("\x1B[7m              |                ");
-    console.log("\x1B[7m          \\   |   /            ");
-    console.log("\x1B[7m            ◼︎◼︎◼︎◼︎◼︎              ");
-    console.log("\x1B[7m          ◼︎◼︎◼︎◼︎◼︎◼︎◼︎◼︎◼︎            ");
-    console.log("\x1B[7m      -= ◼︎◼︎◼︎◼︎◼︎◼︎◼︎◼︎◼︎◼︎◼︎ =-        ");
-    console.log("\x1B[7m          ◼︎◼︎◼︎◼︎◼︎◼︎◼︎◼︎◼︎            ");
-    console.log("\x1B[7m         / ◼︎◼︎◼︎◼︎◼︎◼︎◼︎ \\           ");
-    console.log("\x1B[7m            {_.=}              ");
-    console.log("\x1B[7m            {_.=}              ");
-    console.log("\x1B[7m             -_-               ");
-    console.log("\x1B[7m                               ");
-    console.log("\x1B[7m                               ");
+    console.log("\x1B[0m                               ");
+    console.log("\x1B[0m              |                ");
+    console.log("\x1B[0m          \\   |   /            ");
+    console.log("\x1B[0m            █████              ");
+    console.log("\x1B[0m          █████████            ");
+    console.log("\x1B[0m      -= ███████████ =-        ");
+    console.log("\x1B[0m          █████████            ");
+    console.log("\x1B[0m         / ███████ \\           ");
+    console.log("\x1B[0m            {_.=}              ");
+    console.log("\x1B[0m            {_.=}              ");
+    console.log("\x1B[0m             -_-               ");
+    console.log("\x1B[0m                               ");
+    console.log("\x1B[0m                               ");
     lamp = 'on';
 }
 

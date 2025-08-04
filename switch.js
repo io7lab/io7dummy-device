@@ -17,7 +17,7 @@ function offSwitch() {
     console.log("     |   \x1B[1mON\x1B[0m    |    ");
     console.log("     |    _    |    ");
     console.log("     |   |_|   |    ");
-    console.log("     |   |◼|   |    ");
+    console.log("     |   |█|   |    ");
     console.log("     |         |    ");
     console.log("     |   \x1B[1mOFF\x1B[0m   |      ");
     console.log("     |_________|    ");
@@ -35,7 +35,7 @@ function onSwitch() {
     console.log("     |         |    ");
     console.log("     |   \x1B[1mON\x1B[0m    |    ");
     console.log("     |    _    |    ");
-    console.log("     |   |\x1B[31m◼\x1B[30m|   |    ");
+    console.log("     |   |\x1B[31m█\x1B[0m|   |    ");
     console.log("     |   |_|   |    ");
     console.log("     |         |    ");
     console.log("     |   \x1B[1mOFF\x1B[0m   |      ");
@@ -60,6 +60,20 @@ export function init(device) {
         } else if (key === '0') {
             offSwitch();
             device.publishChange();
+        }
+    });
+
+    device.setUserCommand((topic, msg) => {
+        console.log('command', JSON.parse(msg));
+        let cmd = JSON.parse(msg);
+        if (cmd.hasOwnProperty('d') && cmd.d.hasOwnProperty('switch')) {
+            if (cmd.d.switch === 'on') {
+                onSwitch();
+                device.publishChange();
+            } else {
+                offSwitch();
+                device.publishChange();
+            }
         }
     });
     
