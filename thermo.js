@@ -43,20 +43,20 @@ function displayThermometer(temp) {
             } else {
                 tempLegend = (temp >= columnIndex[lvl] && temp < columnIndex[lvl + 1]) ? `${temp}°C` : '';
             }
-            console.log(`           │${mercuryLevel >= lvl ? tempColor + '█' + resetColor : ' '}│  ${tempLegend}`);
+            console.log(`           |${mercuryLevel >= lvl ? tempColor + '█' + resetColor : ' '}|  ${tempLegend}`);
         }
     }
     clearCursor();
     
     console.log("Use Up/Down Arrow key to change the base temperature");
     console.log()
-    console.log("           ┌─┐");
+    console.log("           +─+");
     colorColumn();
-    console.log(`           │${tempColor}█${resetColor}│`);
-    console.log(`          ╱${tempColor}███${resetColor}╲`);
-    console.log(`         │${tempColor}█████${resetColor}│`);
-    console.log(`         │${tempColor}█████${resetColor}│`);
-    console.log(`          ╲${tempColor}███${resetColor}╱`);
+    console.log(`           |${tempColor}█${resetColor}|`);
+    console.log(`          /${tempColor}███${resetColor}\\`);
+    console.log(`         |${tempColor}█████${resetColor}|`);
+    console.log(`         |${tempColor}█████${resetColor}|`);
+    console.log(`          \\${tempColor}███${resetColor}/`);
     console.log("     ");
     console.log(`    Current: ${tempColor}${temp}°C${resetColor}`);
     console.log("     ");
