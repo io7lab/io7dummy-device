@@ -1,10 +1,10 @@
 # 1. io7 Dummy Device
 
-This is a part of io7 IOT Platform https://github.com/io7lab to help build an IOT device, especially to test out the io7 Platform Cloud installation.
+This is part of the io7 IOT Platform https://github.com/io7lab to help build IOT devices, especially for testing the io7 Platform Cloud installation.
 
-This has a dummy device NodeJS program that emulates a light bulb lamp and a wall switch
+This includes dummy device NodeJS programs that emulate various IoT devices: a light bulb lamp, a wall switch, a lux sensor, and a thermometer.
 
-Once registering two devices(say, lamp1 and switch1) to the io7 IOT Platform after the platform setup, you can run this nodejs programs without installing locally by following this step.
+After registering two devices (say, lamp1 and switch1) to the io7 IOT Platform and completing the platform setup, you can run these NodeJS programs without installing them locally by following these steps.
 
 
 ## To run the light bulb lamp
@@ -12,7 +12,7 @@ Once registering two devices(say, lamp1 and switch1) to the io7 IOT Platform aft
 `npx github:io7lab/io7dummy-device lamp`
 <ul>
   <li>
-    First time run will let configure<br>
+    The first run will prompt you to configure<br>
     <img width="431" alt="Screenshot 2024-05-27 at 4 42 50 PM" src="https://github.com/io7lab/io7dummy-device/assets/13171662/807d8eff-7b7e-4a6a-aef0-dc382dbb0b8a">
   </li>
   <li>
@@ -36,21 +36,21 @@ Once registering two devices(say, lamp1 and switch1) to the io7 IOT Platform aft
 <img width="622" alt="Screenshot 2024-05-27 at 5 02 03 PM" src="https://github.com/io7lab/io7dummy-device/assets/13171662/54bb66db-a0b0-4aed-81de-39a50246559f">
 
 # 2. SSL Configuration
-For the SSL/TLS mqtt connection, just copy the CA's certificate file as 'ca.pem'. With 'ca.pem' file in the current directory, the device program will start mqtts connection.
+For SSL/TLS MQTT connections, simply copy the CA's certificate file as 'ca.pem'. With the 'ca.pem' file in the current directory, the device program will start MQTTS connections.
 
-# 3. Customization or building a New type of Device 
+# 3. Customization or Building a New Type of Device 
 
-A new type of dummy device can be easily created like this, or this can be the base library for a nodejs io7 device.
+Current io7dummy has 4 types of devices implemented: lux sensor, switch, lamp, and thermometer. A new type of dummy device can be easily created as follows, or this can serve as the base library for a NodeJS io7 device.
 * git clone https://github.com/io7lab/io7dummy-device.git
 * cd io7dummy-device
-* and implement a new device or modify existing switch.js/lamp.js/thermo.js for the following points
+* Then implement a new device or modify existing files (switch.js/lamp.js/thermo.js) following these points:
   * import Device class
-  * implement init(device) function with following
+  * implement the init(device) function with the following:
     * define setUserCommand that handles the command from the io7 Platform
     * define loop that handles the device's functionality
     * and call connect() and run()
 * run `node io7dummy yourDevice.js` for testing
-  * the reason of running io7dummy instead of yourDevice.js directly is to make it runnable with npx easily. `npx github:io7lab/io7dummy-device yourDevice.js`
+  * The reason for running io7dummy instead of yourDevice.js directly is to make it easily runnable with npx. `npx github:io7lab/io7dummy-device yourDevice.js`
 
 Here is an example. 
 ```javascript
