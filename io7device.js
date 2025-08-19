@@ -99,7 +99,7 @@ export class Device {
         this.upgradeCallback = null;
         this.isRunning = true;
         
-        this.evtTopic = `iot3/${this.devId}/evt/`;
+        this.evtTopicBase = `iot3/${this.devId}/evt/`;
         this.cmdTopicBase = `iot3/${this.devId}/cmd/`;
         this.cmdTopic = `${this.cmdTopicBase}+/fmt/+`;
         this.metaTopic = `iot3/${this.devId}/mgmt/device/meta`;
@@ -232,7 +232,7 @@ export class Device {
     }
 
     publishEvent(evtId, data, fmt='json', qos=0, retain=false) {
-        this.client.publish(`${this.evtTopic}${evtId}/fmt/${fmt}`, data, { qos, retain });
+        this.client.publish(`${this.evtTopicBase}${evtId}/fmt/${fmt}`, data, { qos, retain });
     }
 
     cfg() {
