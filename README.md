@@ -33,7 +33,7 @@ npx github:io7lab/io7dummy-device switch
 
 # 2. SSL Configuration
 
-For SSL/TLS MQTT connections, simply copy the CA certificate file as `ca.pem`. With the `ca.pem` file in the current directory, the device program will start an MQTTs connection.
+For SSL/TLS MQTT connections, simply copy your CA certificate file as `ca.pem`. With the `ca.pem` file in the current directory, the device program will start an MQTTs connection.
 
 
 # 3. Customization or Building a New Type of Device
