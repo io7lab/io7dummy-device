@@ -45,12 +45,26 @@ function onLamp() {
 }
 
 export function init(device) {
-    
+    let stdin = process.stdin;
+    stdin.setRawMode(true);
+    stdin.resume();
+    stdin.setEncoding('utf8');
+    stdin.on('data', function(key){
+        if (key === '\u0003' || key === '\u001b') {
+            process.exit(); 
+        }
+    });
     device.setUserCommand((topic, msg) => {
         console.log('command', JSON.parse(msg));
         let cmd = JSON.parse(msg);
         if (cmd.hasOwnProperty('d') && cmd.d.hasOwnProperty('lamp')) {
-            if (cmd.d.lamp === 'on') {
+            if (cmd.d.lamp === 'toggle') {
+                if (lamp === 'on') {
+                    offLamp();
+                } else {
+                    onLamp();
+                }
+            } else if (cmd.d.lamp === 'on') {
                 onLamp();
             } else {
                 offLamp();
