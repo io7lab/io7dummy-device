@@ -17,7 +17,7 @@ function offSwitch() {
     console.log("     |   \x1B[1mON\x1B[0m    |    ");
     console.log("     |    _    |    ");
     console.log("     |   |_|   |    ");
-    console.log("     |   |█|   |    ");
+    console.log("     |   |\x1B[37m█\x1B[0m|   |    ");
     console.log("     |         |    ");
     console.log("     |   \x1B[1mOFF\x1B[0m   |      ");
     console.log("     |_________|    ");
