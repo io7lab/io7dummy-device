@@ -6,6 +6,7 @@ const cursorUp = '\x1B[A'; // Move cursor up one line
 function drawDark() {
     clearCursor();
     console.log("\x1B[0m");
+    console.log("Press Up Arrow to simulate Brightness");
     console.log("\x1B[0m        \x1B[7m                        ");
     console.log("\x1B[0m        \x1B[7m     . . . . . . . .    ");
     console.log("\x1B[0m        \x1B[7m     . . . . . . . .    ");
@@ -29,6 +30,7 @@ function drawDark() {
 function drawBright() {
     clearCursor();
     console.log("\x1B[0m");
+    console.log("Press Down Arrow to simulate Darkness");
     console.log("\x1B[0m        \x1B[7m                        ");
     console.log("\x1B[0m        \x1B[7m     ***************    ");
     console.log("\x1B[0m        \x1B[7m     ***************    ");
