@@ -3,7 +3,13 @@
 
 This is part of the io7 IoT Platform ([https://github.com/io7lab](https://github.com/io7lab)), designed to help build IoT devices and test the io7 Platform Cloud installation.
 
-This repository contains Node.js programs that emulate a light bulb lamp and a wall switch. Additional examples include a lux sensor and a thermometer.
+This repository contains Node.js programs that emulate a light bulb lamp and a wall switch. Current set of dummy devices are
+* button
+* lamp
+* lux
+* switch
+* thermo
+* twoButtons
 
 After registering two devices (e.g., `lamp1` and `switch1`) on the io7 IoT Platform, you can run these Node.js programs without installing them locally by following these steps:
 
