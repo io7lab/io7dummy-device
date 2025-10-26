@@ -9,7 +9,9 @@ This repository contains Node.js programs that emulate a light bulb lamp and a w
 * lux
 * switch
 * thermo
+* thermostat
 * twoButtons
+* valve
 
 After registering two devices (e.g., `lamp1` and `switch1`) on the io7 IoT Platform, you can run these Node.js programs without installing them locally by following these steps:
 
