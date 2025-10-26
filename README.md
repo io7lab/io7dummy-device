@@ -66,7 +66,7 @@ The current io7dummy implementation includes four device types: lux sensor, swit
 Here is an example:
 
 ```javascript
-import { Device, clearCursor } from './io7device.js';
+import { Device, clearCursor }  from './io7device.js';
 
 const cursorUp = '\x1B[A'; // Move cursor up one line
 
@@ -76,8 +76,9 @@ function offValve() {
   clearCursor();
   console.log("                               ");  
   console.log("                               ");  
-  console.log("                               ");  
-  console.log("             __T__             ");  
+  console.log("          _____-_____          ");  
+  console.log("               |               ");  
+  console.log("          _____|_____          ");  
   console.log("                               ");  
   console.log("          Valve Closed         ");  
   console.log("                               ");  
@@ -88,9 +89,10 @@ function offValve() {
 function onValve() {
   clearCursor();
   console.log("                               ");  
+  console.log("               T               ");  
+  console.log("          _____|_____          ");  
   console.log("                               ");  
-  console.log("                               ");  
-  console.log("             =====             ");  
+  console.log("          ___________          ");  
   console.log("                               ");  
   console.log("           Valve Open          ");  
   console.log("                               ");  
@@ -99,6 +101,15 @@ function onValve() {
 }
 
 export function init(device) {
+    let stdin = process.stdin;
+    stdin.setRawMode(true);
+    stdin.resume();
+    stdin.setEncoding('utf8');
+    stdin.on('data', function(key){
+        if (key === '\u0003' || key === '\u001b') {
+            process.exit(); 
+        }
+    });
   device.setUserCommand((topic, msg) => {
     console.log('command', JSON.parse(msg));
     let cmd = JSON.parse(msg);
