@@ -36,12 +36,12 @@ function displayThermometer(temp) {
     function colorColumn() {
         for (let lvl = 10; lvl > 0; lvl--) {
             let tempLegend;
-            if (lvl === 10) {
-                tempLegend = (temp >= columnIndex[lvl]) ? `${temp}°C` : '';
-            } else if (lvl === 1) {
-                tempLegend = (temp <= columnIndex[lvl]) ? `${temp}°C` : '';
+            if (lvl >= 10) {
+                tempLegend = (temp >= columnIndex[lvl]) ? `${tempColor}${temp}°C${resetColor}` : '';
+            } else if (lvl <= 1) {
+                tempLegend = (temp <= columnIndex[lvl + 1])  ? `${tempColor}${temp}°C${resetColor}` : '';
             } else {
-                tempLegend = (temp >= columnIndex[lvl] && temp < columnIndex[lvl + 1]) ? `${temp}°C` : '';
+                tempLegend = (temp >= columnIndex[lvl] && temp < columnIndex[lvl + 1]) ? `${tempColor}${temp}°C${resetColor}` : '';
             }
             console.log(`           |${mercuryLevel >= lvl ? tempColor + '█' + resetColor : ' '}|  ${tempLegend}`);
         }
