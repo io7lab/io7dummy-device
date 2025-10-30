@@ -81,7 +81,7 @@ export function init(device) {
     stdin.setRawMode(true);
     stdin.resume();
     stdin.setEncoding('utf8');
-    stdin.on('data', function(key){
+    stdin.on('data', function (key) {
         if (key === '\u001b[A') {  // Up arrow
             base_temp = adjust('up', base_temp);
             device.publishChange();
@@ -98,14 +98,31 @@ export function init(device) {
             process.exit();
         }
     });
-    
+
+    device.setUserCommand((topic, msg) => {
+        let cmd = JSON.parse(msg);
+        if (cmd.hasOwnProperty('d') && cmd.d.hasOwnProperty('target')) {
+            let temp = getRandomData(base_temp);
+            target = cmd.d.target;
+            let data = {
+                d: {
+                    temperature: temp,
+                    target: target
+                }
+            }
+            displayThermometer(temp, target);
+            device.publishEvent('status', JSON.stringify(data));
+            console.log('  ' + JSON.stringify(data), cursorUp);
+        }
+    });
+
     device.loop = () => {
         let temp = getRandomData(base_temp);
         displayThermometer(temp, target);
         let data = {
-            d : {
-                temperature : temp,
-                target : target
+            d: {
+                temperature: temp,
+                target: target
             }
         }
         device.publishEvent('status', JSON.stringify(data));
@@ -113,7 +130,7 @@ export function init(device) {
     };
 
     setColumnIndex();
-    
+
     device.connect();
     device.run();
 }
