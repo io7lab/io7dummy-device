@@ -52,18 +52,16 @@ function displayRotary(target) {
     const dc = tc - cy;
     const steps = Math.max(Math.abs(dr), Math.abs(dc));
 
+    // Use a single consistent character based on overall direction
+    let ch;
+    if (Math.abs(dr) === 0 || Math.abs(dc) > 3 * Math.abs(dr)) ch = '-';
+    else if (Math.abs(dc) === 0 || Math.abs(dr) > 3 * Math.abs(dc)) ch = '|';
+    else if ((dr > 0 && dc > 0) || (dr < 0 && dc < 0)) ch = '\\';
+    else ch = '/';
+
     for (let s = 1; s < steps; s++) {
         const pr = Math.round(cx + dr * s / steps);
         const pc = Math.round(cy + dc * s / steps);
-        const tdr = Math.round(dr * s / steps) - Math.round(dr * (s - 1) / steps);
-        const tdc = Math.round(dc * s / steps) - Math.round(dc * (s - 1) / steps);
-
-        let ch;
-        if (tdr === 0) ch = '-';
-        else if (tdc === 0) ch = '|';
-        else if ((tdr > 0 && tdc > 0) || (tdr < 0 && tdc < 0)) ch = '\\';
-        else ch = '/';
-
         grid[pr][pc] = A + ch + R;
     }
 
