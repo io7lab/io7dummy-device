@@ -1,25 +1,23 @@
 import { Device, clearCursor, cursorUp } from './io7device.js';
 
-let target = 25;
-const minTarget = 20;
-const maxTarget = 30;
+let value = 128;  // Start in the middle
+const min = 0;
+const max = 255;
 
 function adjust(direction) {
-    if (direction === 'left' && target > minTarget) {
-        target = target - 1;
-    } else if (direction === 'right' && target < maxTarget) {
-        target = target + 1;
+    if (direction === 'left' && value > min) {
+        value = value - 10;
+    } else if (direction === 'right' && value < max) {
+        value = value + 10;
     }
 }
 
-function displayRotary(target) {
+function displayRotary(value) {
     const R = '\x1B[0m';
     const A = '\x1B[1;33m';
     const D = '\x1B[90m';
     const V = '\x1B[1;36m';
     const P = '\x1B[1;37m';
-
-    const pos = target - minTarget; // 0-10
 
     const rows = 8;
     const cols = 17;
@@ -40,6 +38,8 @@ function displayRotary(target) {
         [7, 5], [6, 3], [4, 2], [2, 3], [1, 5],
         [1, 8], [1, 11], [2, 13], [4, 14], [6, 13], [7, 11]
     ];
+
+    const pos = Math.round((value - min) / (max - min) * (dots.length - 1));
 
     for (let i = 0; i < dots.length; i++) {
         const [r, c] = dots[i];
@@ -66,20 +66,20 @@ function displayRotary(target) {
     }
 
     clearCursor();
-    console.log("  Use Left/Right Arrow Keys to set the target temperature");
+    console.log("  Use Left/Right Arrow Keys to set the value");
     console.log();
     for (let r = 0; r < rows; r++) {
         console.log('    ' + grid[r].join(''));
     }
     console.log();
-    console.log(`     ${D}${minTarget}${R}                ${D}${maxTarget}${R}`);
-    console.log(`        ${V}[ Target: ${target} C ]${R}`);
+    console.log(`     ${D}${min}${R}                ${D}${max}${R}`);
+    console.log(`        ${V}[ Value: ${value} ]${R}`);
     console.log();
 }
 
 export function init(device) {
     let stdin = process.stdin;
-    stdin.setRawMode(true);
+    if (stdin.isTTY) stdin.setRawMode(true);
     stdin.resume();
     stdin.setEncoding('utf8');
     stdin.on('data', function (key) {
@@ -96,12 +96,12 @@ export function init(device) {
 
     device.setUserCommand((topic, msg) => {
         let cmd = JSON.parse(msg);
-        if (cmd.hasOwnProperty('d') && cmd.d.hasOwnProperty('target')) {
-            target = cmd.d.target;
-            displayRotary(target);
+        if (cmd.hasOwnProperty('d') && cmd.d.hasOwnProperty('value')) {
+            value = cmd.d.value;
+            displayRotary(value);
             let data = {
                 d: {
-                    target: target
+                    value: value
                 }
             };
             device.publishEvent('status', JSON.stringify(data));
@@ -110,10 +110,10 @@ export function init(device) {
     });
 
     device.loop = () => {
-        displayRotary(target);
+        displayRotary(value);
         let data = {
             d: {
-                target: target
+                value: value
             }
         };
         device.publishEvent('status', JSON.stringify(data));
